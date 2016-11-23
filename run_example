@@ -1,0 +1,24 @@
+./e-mem  ./example/ref.fasta  ./example/que.fasta -l 50 -b > ./example/l50
+
+diff -b ./example/50 ./example/l50 > ./example/l50.df
+if [[ -s ./example/l50.df ]] ; then
+echo "Test Failed : l50.df has data."
+else
+echo "Test Passed"
+rm ./example/l50
+rm ./example/l50.df
+fi ;
+
+./e-mem  ./example/ref.fasta  ./example/que.fasta -l 10 -b > ./example/l10
+
+diff -b ./example/10 ./example/l10 > ./example/l10.df
+if [[ -s ./example/l10.df ]] ; then
+echo "Test Failed: l10.df has data."
+else
+echo "Test Passed"
+rm ./example/l10
+rm ./example/l10.df
+fi ;
+
+
+
