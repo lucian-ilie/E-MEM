@@ -37,25 +37,25 @@ The valid set of options for e-mem program are:
 
 Options:
 
--n	   match only the characters a, c, g, or t, they can be in upper or in lower case
+-n	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match only the characters a, c, g, or t, they can be in upper or in lower case
    
--l	   set the minimum length of a match. The default length is 50
+-l	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set the minimum length of a match. The default length is 50
 
--b	   compute forward and reverse complement matches
+-b	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compute forward and reverse complement matches
 
--r	   only compute reverse complement matches
+-r	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only compute reverse complement matches
 
--c	   report the query-position of a reverse complement match relative to the original query sequence
+-c	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report the query-position of a reverse complement match relative to the original query sequence
 
--F	   force 4 column output format regardless of the number of reference sequence input
+-F	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force 4 column output format regardless of the number of reference sequence input
 
--L	   show the length of the query sequences on the header line
+-L	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show the length of the query sequences on the header line
 
--d	   set the split size. The default value is 1
+-d	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set the split size. The default value is 1
 
--t	   number of threads. The default is 1 thread
+-t	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number of threads. The default is 1 thread
 
--h	   show possible options
+-h &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show possible options
 
 Apart from the options used in Mummer, we provide two more options. The option -d is used for splitting the sequences into two or more parts.  By default this value is set to 1, which means no splitting. This option with value >1 will reduce the overall memory requirement of the program with some compromise on performance.
 
