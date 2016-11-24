@@ -1,23 +1,23 @@
 # E-MEM
 Efficient Computation of Maximal Exact Matches
 
-*** E-MEM PROGRAM README ***
-
--- DESCRIPTION --
+##-- DESCRIPTION --
 
 E-MEM is an efficient MEM computation program for large genomes which can be used as a stand alone application or a drop in replacement for MUMmer3. The detailed comparison of E-MEM with other leading programs can be found in E-MEM paper (Nilesh Khiste and Lucian Ilie).
 
    USAGE:
-    e-mem  [options]  <reference>  <query> ...
+   
+    e-mem  [options]  < reference >  < query > ...
 
     [options]    type 'e-mem -h' for a list of options.
     <reference>  reference file with one or more FastA sequences
     <query>      query file with one or more FastA sequences
 
    OUTPUT:
+   
                  stdout  a list of exact matches
 
--- INSTALLATION --
+##-- INSTALLATION --
 
 After extracting the files into the desired installation directory,
 change to the "e-mem" directory.  Once in this directory, type: "make"
@@ -29,37 +29,49 @@ For sanity test, please execute shell-script run_example. On success, the script
 will print "Test passed" as output.
 
 
--- RUNNING E-MEM STANDALONE --
+##-- RUNNING E-MEM STANDALONE --
 
 The E-MEM program can be used with fastA files with one or more sequences. The program can be run in both serial and parallel mode. The parallel mode has an advantage in terms of time with respect to serial mode.
 
 The valid set of options for e-mem program are:
-Options:
--n	match only the characters a, c, g, or t
-  	they can be in upper or in lower case
--l	set the minimum length of a match. The default length
-  	is 50
--b	compute forward and reverse complement matches
--r	only compute reverse complement matches
--c	report the query-position of a reverse complement match
-  	relative to the original query sequence
--F	force 4 column output format regardless of the number of
-  	reference sequence input
--L	show the length of the query sequences on the header line
--d	set the split size. The default value is 1
--t	number of threads. The default is 1 thread
--h	show possible options
 
+Options:
+
+-n	   match only the characters a, c, g, or t, they can be in upper or in lower case
+   
+-l	   set the minimum length of a match. The default length is 50
+
+-b	   compute forward and reverse complement matches
+
+-r	   only compute reverse complement matches
+
+-c	   report the query-position of a reverse complement match relative to the original query sequence
+
+-F	   force 4 column output format regardless of the number of reference sequence input
+
+-L	   show the length of the query sequences on the header line
+
+-d	   set the split size. The default value is 1
+
+-t	   number of threads. The default is 1 thread
+
+-h	   show possible options
 
 Apart from the options used in Mummer, we provide two more options. The option -d is used for splitting the sequences into two or more parts.  By default this value is set to 1, which means no splitting. This option with value >1 will reduce the overall memory requirement of the program with some compromise on performance.
 
-The option -t is used for running the program in parallel mode. The default value is set to 1, which means serial mode. This option with value >1 will reduce overall running time of the program with some compromise on memory.
+The option -t is used for running the program in parallel mode. The default value is set to 1, which means serial mode. This option with value > 1 will reduce overall running time of the program with some compromise on memory.
 
--- RUNNING E-MEM WITHIN MUMMER3 --
+##-- RUNNING E-MEM WITHIN MUMMER3 --
 
 Mummer3 has many different scripts where one of the key program is MEM computation. In all the scripts, the MEM computation program can be replaced with E-MEM with ease for better performance.
 
-For example, in order to use NUCMER (all-vs-all comparison of nucleotide sequences contained in FastA files) with E-MEM, simply change all the references to mummer (MEM computation program) with e-mem program. In script NUCMER, search for "$BIN_DIR/mummer" and replace it with "<path>/e-mem" where <path> is installation idirectory for e-mem program.
+For example, in order to use NUCMER (all-vs-all comparison of nucleotide sequences contained in FastA files) with E-MEM, simply change all the references to mummer (MEM computation program) with e-mem program. In script NUCMER, search for "$BIN_DIR/mummer" and replace it with "< path >/e-mem" where < path > is installation idirectory for e-mem program.
 
-The other important script in MUmmer3 is run-mummer3 (the alignment program). To use this script with E-MEM, simply replace "$bindir/mummer" with "<path>/e-mem" where <path> is e-mem installation directory.
+The other important script in MUmmer3 is run-mummer3 (the alignment program). To use this script with E-MEM, simply replace "$bindir/mummer" with "< path >/e-mem" where < path > is e-mem installation directory.
+
+###CITE
+If you find E-MEM program useful, please cite the E-MEM paper:
+
+Khiste et. al. [E-MEM: efficient computation of maximal exact matches for very large genomes](http://bioinformatics.oxfordjournals.org/content/31/4/509.short) Bioinformatics, 2015
+
  
