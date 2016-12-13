@@ -72,6 +72,6 @@ The other important script in MUmmer3 is run-mummer3 (the alignment program). To
 ###CITE
 If you find E-MEM program useful, please cite the E-MEM paper:
 
-Khiste et. al. [E-MEM: efficient computation of maximal exact matches for very large genomes](http://bioinformatics.oxfordjournals.org/content/31/4/509.short) Bioinformatics, 2015
+N. Khiste, L. Ilie [E-MEM: efficient computation of maximal exact matches for very large genomes](http://bioinformatics.oxfordjournals.org/content/31/4/509.short) Bioinformatics, 2015
 
  
