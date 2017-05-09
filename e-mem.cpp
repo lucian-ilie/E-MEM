@@ -156,9 +156,11 @@ void helperReportMem(uint64_t &currRPos, uint64_t &currQPos, uint64_t totalRBits
              * enter this loop.
              */
             currR = RefFile.binReads[offsetR?i:i-1];
-            currR >>= DATATYPE_WIDTH-offsetR;
+            if (offsetR)
+                currR >>= DATATYPE_WIDTH-offsetR;
             currQ = QueryFile.binReads[offsetQ?j:j-1];
-            currQ >>= DATATYPE_WIDTH-offsetQ;
+            if (offsetQ)
+                currQ >>= DATATYPE_WIDTH-offsetQ;
         } 
 
         if((currR & global_mask_right[matchSize/2 - 1]) != (currQ &  global_mask_right[matchSize/2 - 1])) {
