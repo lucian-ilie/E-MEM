@@ -91,7 +91,7 @@ For example, in order to use NUCMER (all-vs-all comparison of nucleotide sequenc
 
 The other important script in MUmmer3 is run-mummer3 (the alignment program). To use this script with E-MEM, simply replace "$bindir/mummer" with "< path >/e-mem" where < path > is e-mem installation directory.
 
-###CITE
+## CITE
 If you find E-MEM program useful, please cite the E-MEM paper:
 
 N. Khiste, L. Ilie [E-MEM: efficient computation of maximal exact matches for very large genomes](http://bioinformatics.oxfordjournals.org/content/31/4/509.short) Bioinformatics, 2015
