@@ -495,7 +495,7 @@ class seqFileReadInfo {
 
       void writeReverseComplementString(string &name, string &content, fstream &file)
       {
-          file << ">" << name << endl;
+          file << ">" << name << "\n";
           flipNswap(content);
           file << content ;
       }
@@ -747,15 +747,15 @@ class tmpFilesInfo {
     {
         if (revComplement & 0x1){
             if (commonData::lenInHeader) {
-                cout << "> " << (*itQ).seq << " Reverse" << " Len = " << ((*itQ).end-(*itQ).start+2)/2 << endl;
+                cout << "> " << (*itQ).seq << " Reverse" << " Len = " << ((*itQ).end-(*itQ).start+2)/2 << "\n";
             }else{
-                cout << "> " << (*itQ).seq << " Reverse" << endl;
+                cout << "> " << (*itQ).seq << " Reverse" << "\n";
             }
         }else{
             if (commonData::lenInHeader){
-                cout << "> " << (*itQ).seq << " Len = " << ((*itQ).end-(*itQ).start+2)/2 << endl;
+                cout << "> " << (*itQ).seq << " Len = " << ((*itQ).end-(*itQ).start+2)/2 << "\n";
             }else{
-                cout << "> " << (*itQ).seq << endl;
+                cout << "> " << (*itQ).seq << "\n";
             }
         }
     }
@@ -873,14 +873,14 @@ class tmpFilesInfo {
         if (rRef-lRef+2 >= static_cast<uint64_t>(commonData::minMemLen)){
            if (refSeqInfo.size() == 1 && !commonData::fourColOutput) {
                if ((revComplement & 0x1) && commonData::relQueryPos)
-                   cout << " " << setw(15) << ((lRef+2)/2) <<  setw(15) << ((*itQ).end-(*itQ).start-lQue+2)/2 << setw(15) << ((rRef-lRef+2)/2) << endl;
+                   cout << " " << setw(15) << ((lRef+2)/2) <<  setw(15) << ((*itQ).end-(*itQ).start-lQue+2)/2 << setw(15) << ((rRef-lRef+2)/2) << "\n";
                else
-                   cout << " " << setw(15) << ((lRef+2)/2) <<  setw(15) << ((lQue+2)/2) << setw(15) << ((rRef-lRef+2)/2) << endl;
+                   cout << " " << setw(15) << ((lRef+2)/2) <<  setw(15) << ((lQue+2)/2) << setw(15) << ((rRef-lRef+2)/2) << "\n";
            }else{
                if ((revComplement & 0x1) && commonData::relQueryPos) {
-                   cout << " " << setw(30) << std::left <<(*itR).seq << setw(15) << ((lRef+2)/2) <<  setw(15) << ((*itQ).end-(*itQ).start-lQue+2)/2 << setw(15) << ((rRef-lRef+2)/2) << endl;
+                   cout << " " << setw(30) << std::left <<(*itR).seq << setw(15) << ((lRef+2)/2) <<  setw(15) << ((*itQ).end-(*itQ).start-lQue+2)/2 << setw(15) << ((rRef-lRef+2)/2) << "\n";
                }else{
-                   cout << " " << setw(30) << std::left <<(*itR).seq << setw(15) << ((lRef+2)/2) <<  setw(15) << ((lQue+2)/2) << setw(15) << ((rRef-lRef+2)/2) << endl;
+                   cout << " " << setw(30) << std::left <<(*itR).seq << setw(15) << ((lRef+2)/2) <<  setw(15) << ((lQue+2)/2) << setw(15) << ((rRef-lRef+2)/2) << "\n";
                }
            }
         }
@@ -959,31 +959,31 @@ class tmpFilesInfo {
 
         filePtr = forFile;
         if(getline((*filePtr), line).good()) 
-            cout << line << endl;
+            cout << line << "\n";
 
         while(getline((*filePtr), line).good()) {
             if(line[0] == '>'){
                 if (last_line.size())
-                    cout << last_line << endl;
+                    cout << last_line << "\n";
                 last_line = line;
                 if (filePtr == forFile) {
                     filePtr = revFile;
                     if (first) {
                         if(getline((*filePtr), line).good()) 
-                            cout << line << endl;
+                            cout << line << "\n";
                         first=0;
                     }
                 }else
                     filePtr = forFile;
                 continue;
             }
-            cout << line << endl;
+            cout << line << "\n";
         }
 
-        cout << last_line << endl;
+        cout << last_line << "\n";
         filePtr = revFile;
         while(getline((*filePtr), line).good()) 
-            cout << line << endl;
+            cout << line << "\n";
    
         (*revFile).close();
         (*forFile).close();

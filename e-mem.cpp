@@ -234,6 +234,14 @@ void helperReportMem(uint64_t &currRPos, uint64_t &currQPos, uint64_t totalRBits
                 rQue-=2;
                 break;
             }
+            /* if current rRef/rQue plus matchSize smaller than minMEMLength, then simply return.
+             * Note that one less character is compared due to a mismatch 
+             */
+            if (rRef+matchSize-lRef < static_cast<uint64_t>(commonData::minMemLen))
+            {
+                return;
+            }
+
             mismatch=1;
             matchSize/=2;
             if (matchSize%2)
@@ -739,6 +747,7 @@ int main (int argc, char *argv[])
     QueryFile.closeFile();
 
     arrayTmpFile.removeDuplicates(refSeqInfo, querySeqInfo, revComplement);
+    fflush(0);
     return 0;
 }
 
