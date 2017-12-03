@@ -278,7 +278,7 @@ class seqFileReadInfo {
       {
           size = size/commonData::d;
           binReadSize = floor((size+numSequences*RANDOM_SEQ_SIZE+commonData::d)/32+4);
-          binReads = new uint64_t[binReadSize];
+          binReads = new uint64_t[binReadSize+1];
           return size;
       }
   

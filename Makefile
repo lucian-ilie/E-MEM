@@ -5,8 +5,8 @@ endif
 CC        = g++
 EXEC      = e-mem
 CFLAGS    = -Wall -Wextra -Wunused -mpopcnt -std=gnu++0x -fopenmp 
-CDEBUG    = -g -ggdb -DDEBUG 
-CPROF    = -g -ggdb -DDEBUG -pg 
+CDEBUG    = -g -ggdb -gdwarf-3 -DDEBUG 
+CPROF    = -g -ggdb -gdwarf-3 -DDEBUG -pg 
 COPTIMIZE = -Wuninitialized -O3 -fomit-frame-pointer
 CLIBS     = -lm
 
