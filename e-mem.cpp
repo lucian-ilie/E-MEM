@@ -42,8 +42,6 @@
 
 #include "e-mem.h"
 #include "file.h"
-#include "qlist.h"
-
 
 using namespace std;
 using namespace boost;
@@ -97,7 +95,7 @@ void buildRefHash(Knode* &refHash, uint64_t totalBits, seqFileReadInfo &RefFile)
  * Input: name : reference sequence string for output  
  *
  */
-void helperReportMem(uint64_t &currRPos, uint64_t &currQPos, uint64_t totalRBits, uint64_t totalQBits, queryList* &currQueryMEMs, std::unordered_multimap <uint64_t, uint64_t> &currMEMs, seqFileReadInfo &RefFile, seqFileReadInfo &QueryFile, tmpFilesInfo &arrayTmpFile, mapObject &RefNpos, mapObject &QueryNpos, uint32_t &revComplement)
+void helperReportMem(uint64_t &currRPos, uint64_t &currQPos, uint64_t totalRBits, uint64_t totalQBits, seqFileReadInfo &RefFile, seqFileReadInfo &QueryFile, tmpFilesInfo &arrayTmpFile, mapObject &RefNpos, mapObject &QueryNpos, uint32_t &revComplement)
 {
     /*
      * lRef and lQue are local variables for left extension of
@@ -281,12 +279,7 @@ void helperReportMem(uint64_t &currRPos, uint64_t &currQPos, uint64_t totalRBits
         rQue=totalQBits;
     }
 
-    if (arrayTmpFile.writeMemInTmpFiles(lRef, rRef, lQue, rQue, QueryFile, RefFile, revComplement)) {
-        uint64_t key = ((lRef << 32) | rRef);
-        uint64_t value = ((lQue << 32) | rQue);
-        currMEMs.insert(std::make_pair(key, value));
-        currQueryMEMs->ListAdd(&currQueryMEMs, lQue, rQue, key);
-    }
+    arrayTmpFile.writeMemInTmpFiles(lRef, rRef, lQue, rQue, QueryFile, RefFile, revComplement);
 }
 
 void reportMEM(Knode * &refHash, uint64_t totalBases, uint64_t totalQBases, seqFileReadInfo &RefFile, seqFileReadInfo &QueryFile, tmpFilesInfo &arrayTmpFile, uint32_t &revComplement)
@@ -295,8 +288,6 @@ void reportMEM(Knode * &refHash, uint64_t totalBases, uint64_t totalQBases, seqF
   uint32_t copyBits=0;
   #pragma omp parallel num_threads(commonData::numThreads) 
   {
-      queryList *currQueryMEMs = NULL;
-      unordered_multimap <uint64_t, uint64_t> currMEMs;
       uint64_t currKmer=0, j=0;
       int32_t offset=0;
       uint32_t first=1;
@@ -360,14 +351,10 @@ void reportMEM(Knode * &refHash, uint64_t totalBases, uint64_t totalQBases, seqF
           {
               // We have a match
               for (uint64_t n=1; n<=dataPtr[0]; n++) {   
-                  // Check if MEM has already been discovered, if not proces it
-                  if (!(currQueryMEMs->checkRedundantMEM(&currQueryMEMs, dataPtr[n], currKmerPos, CHARS2BITS(totalBases), currMEMs)))
-                      helperReportMem(dataPtr[n], currKmerPos, CHARS2BITS(totalBases), CHARS2BITS(totalQBases), currQueryMEMs, currMEMs, RefFile, QueryFile, arrayTmpFile, RefNpos, QueryNpos, revComplement);
+                  helperReportMem(dataPtr[n], currKmerPos, CHARS2BITS(totalBases), CHARS2BITS(totalQBases), RefFile, QueryFile, arrayTmpFile, RefNpos, QueryNpos, revComplement);
               }
           }
       }
-      currMEMs.clear();
-      currQueryMEMs->ListFree(&currQueryMEMs);
   }  
 }
 
@@ -496,7 +483,7 @@ void checkCommandLineOptions(uint32_t &options)
 void print_help_msg()
 {
     cout <<  endl;
-    cout << "E-MEM Version 1.0.1, Dec. 12, 2017" << endl;
+    cout << "E-MEM Version 2.0.0, Dec. 12, 2017" << endl;
     cout << "© 2014 Nilesh Khiste, Lucian Ilie" << endl;
     cout <<  endl;
     cout << "E-MEM finds and outputs the position and length of all maximal" << endl;

@@ -657,7 +657,7 @@ class tmpFilesInfo {
         m.lR=lR;
         m.rQ=rQ;
         m.rR=rR;
-        MemExtVec.push_back(m);
+        MemExtVec.emplace_back(m);
     }
 
 
@@ -677,7 +677,17 @@ class tmpFilesInfo {
    
     static bool compare_reference (const MemExt &obj1, const MemExt &obj2)
     {
-      return (obj1.lR>=obj2.lR?false:true);
+      if (obj1.lR<obj2.lR)
+         return true;
+      else if (obj1.lR>obj2.lR)
+         return false;
+      else{
+         if (obj1.lQ<obj2.lQ)
+             return true;
+         else
+             return false;
+      }
+
     }
 
     static bool myUnique(const MemExt &obj1, const MemExt &obj2)
@@ -893,13 +903,20 @@ class tmpFilesInfo {
             return;
 
         if (MemExtVec.size() > 1) {
+            sort(MemExtVec.begin(), MemExtVec.end(), MemExt());
+            //Remove duplicates, this is happens due to removal of all checks.
+            vector<MemExt>::iterator last=unique(MemExtVec.begin(), MemExtVec.end(), myUnique);
             do {
                 flag=0;
-                sort(MemExtVec.begin(), MemExtVec.end(), MemExt());
-                for (vector<MemExt>::iterator it=MemExtVec.begin(); it != --MemExtVec.end(); ++it) {
+                for (vector<MemExt>::iterator it=MemExtVec.begin(); it != (last-1); ++it) {
+                    if (!(*it).lQ && !(*it).rQ && !(*it).lR && !(*it).rR )
+                        continue;
+
                     vector<MemExt>::iterator dup = it;
                     ++dup;
-                    for (; dup != MemExtVec.end(); ++dup) {
+                     for (; dup != last; ++dup) {
+                        if (!(*dup).lQ && !(*dup).rQ && !(*dup).lR && !(*dup).rR )
+                            continue;
                         if((*dup).lQ + static_cast<uint64_t>(commonData::minMemLen-2)-2 > (*it).rQ) 
                             break;
                         if((*dup).lQ + static_cast<uint64_t>(commonData::minMemLen-2)-2 == (*it).rQ) {
@@ -907,28 +924,10 @@ class tmpFilesInfo {
                                 flag=1;
                                 (*it).rQ=(*dup).rQ;
                                 (*it).rR=(*dup).rR;
-                                MemExtVec.erase(dup);
-                                break;
-                            }
-                        }
-                    }
-                    if (flag)
-                        break;
-                }
-
-                sort(MemExtVec.begin(), MemExtVec.end(), compare_reference);
-                for (vector<MemExt>::iterator it=MemExtVec.begin(); it != --MemExtVec.end(); ++it) {
-                    vector<MemExt>::iterator dup = it;
-                    ++dup;
-                    for (; dup != MemExtVec.end(); ++dup) {
-                        if((*dup).lR + static_cast<uint64_t>(commonData::minMemLen-2)-2 > (*it).rR) 
-                            break;
-                        if((*dup).lR + static_cast<uint64_t>(commonData::minMemLen-2)-2 == (*it).rR) {
-                            if((*dup).lQ + static_cast<uint64_t>(commonData::minMemLen-2)-2 == (*it).rQ) {
-                                flag=1;
-                                (*it).rQ=(*dup).rQ;
-                                (*it).rR=(*dup).rR;
-                                MemExtVec.erase(dup);
+                                (*dup).rQ=0;
+                                (*dup).rR=0;
+                                (*dup).lQ=0;
+                                (*dup).lR=0;
                                 break;
                             }
                         }
@@ -937,10 +936,44 @@ class tmpFilesInfo {
                         break;
                 }
             } while (flag);
-        }
 
-        for (vector<MemExt>::iterator it=MemExtVec.begin(); it != MemExtVec.end(); ++it) {
-            writeToFile((*it).lQ, (*it).rQ, (*it).lR, (*it).rR, revComplement);
+            last=unique(MemExtVec.begin(), last, myUnique);
+
+            sort(MemExtVec.begin(), last, compare_reference);
+            do {
+                flag=0;
+                for (vector<MemExt>::iterator it=MemExtVec.begin(); it != (last-1); ++it) {
+                    if (!(*it).lQ && !(*it).rQ && !(*it).lR && !(*it).rR )
+                        continue;
+                    vector<MemExt>::iterator dup = it;
+                    ++dup;
+                    for (; dup != last; ++dup) {
+                        if (!(*dup).lQ && !(*dup).rQ && !(*dup).lR && !(*dup).rR )
+                            continue;
+                        if((*dup).lR + static_cast<uint64_t>(commonData::minMemLen-2)-2 > (*it).rR) 
+                            break;
+                        if((*dup).lR + static_cast<uint64_t>(commonData::minMemLen-2)-2 == (*it).rR) {
+                            if((*dup).lQ + static_cast<uint64_t>(commonData::minMemLen-2)-2 == (*it).rQ) {
+                                flag=1;
+                                (*it).rQ=(*dup).rQ;
+                                (*it).rR=(*dup).rR;
+                                (*dup).rQ=0;
+                                (*dup).rR=0;
+                                (*dup).lQ=0;
+                                (*dup).lR=0;
+                                break;
+                            }
+                        }
+                    }
+                    if (flag)
+                        break;
+                }
+            } while (flag);
+
+            for (vector<MemExt>::iterator it=MemExtVec.begin(); it != last; ++it) {
+                if ((*it).lQ || (*it).rQ || (*it).lR || (*it).rR )
+                    writeToFile((*it).lQ, (*it).rQ, (*it).lR, (*it).rR, revComplement);
+            }
         }
         MemExtVec.clear();
     }
@@ -1044,13 +1077,10 @@ class tmpFilesInfo {
             }
 
             while(!TmpFiles[i].read((char *)&m, sizeof (MemExt)).eof()) {
-                MemExtVec.push_back(m);
+                MemExtVec.emplace_back(m);
             }
             sort(MemExtVec.begin(), MemExtVec.end(), MemExt());
-            if (commonData::d==1 &&  commonData::numThreads==1)   // Everything is unique
-                last=MemExtVec.end();
-            else
-                last=unique(MemExtVec.begin(), MemExtVec.end(), myUnique);
+            last=unique(MemExtVec.begin(), MemExtVec.end(), myUnique);
             TmpFiles[i].close();
             remove(buffer);
             for (vector<MemExt>::iterator it=MemExtVec.begin(); it!=last; ++it) {
