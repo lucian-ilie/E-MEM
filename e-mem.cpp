@@ -483,7 +483,7 @@ void checkCommandLineOptions(uint32_t &options)
 void print_help_msg()
 {
     cout <<  endl;
-    cout << "E-MEM Version 2.0.0, Dec. 12, 2017" << endl;
+    cout << "E-MEM Version 1.0.2, Dec. 12, 2017" << endl;
     cout << "© 2014 Nilesh Khiste, Lucian Ilie" << endl;
     cout <<  endl;
     cout << "E-MEM finds and outputs the position and length of all maximal" << endl;
