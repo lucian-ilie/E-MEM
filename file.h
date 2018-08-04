@@ -123,12 +123,6 @@ class seqFileReadInfo {
       void processInput(string &str, uint64_t &sz, uint64_t &blockNCount)
       {
           int chooseLetter=0;
-          uint64_t k=0;
-
-          if (!totalBases) {
-              for (k=0; k<binReadSize; ++k)
-                 binReads[k]=0;
-          }
 
           /* Processing the sequences by encoding the base pairs into 2 bits. */
           for ( std::string::iterator it=str.begin(); it!=str.end(); ++it)
@@ -279,6 +273,9 @@ class seqFileReadInfo {
           size = size/commonData::d;
           binReadSize = floor((size+numSequences*RANDOM_SEQ_SIZE+commonData::d)/32+4);
           binReads = new uint64_t[binReadSize+1];
+          memset(binReads, 0, sizeof(uint64_t)*(binReadSize+1));
+          if (numSequences && commonData::ignoreN)
+              blockOfNs.reserve(numSequences+10);
           return size;
       }
   
