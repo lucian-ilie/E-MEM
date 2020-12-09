@@ -2,9 +2,9 @@ ifndef BIN_DIR
 BIN_DIR := $(CURDIR)
 endif
 
-CC        = g++
+CXX       = g++
 EXEC      = e-mem
-CFLAGS    = -Wall -Wextra -Wunused -mpopcnt -std=gnu++0x -fopenmp 
+CXXFLAGS += -Wall -Wextra -Wunused -mpopcnt -std=gnu++0x -fopenmp
 CDEBUG    = -g -ggdb -gdwarf-3 -DDEBUG 
 CPROF    = -g -ggdb -gdwarf-3 -DDEBUG -pg 
 COPTIMIZE = -Wuninitialized -O3 -fomit-frame-pointer
@@ -19,11 +19,11 @@ NAME    := "e-mem"
 CPUARCH := $(shell uname -m)
 
 ifeq ($(MAKECMDGOALS),debug)
-        CFLAGS += $(CDEBUG)
+        CXXFLAGS += $(CDEBUG)
 else ifeq ($(MAKECMDGOALS),profile)
-        CFLAGS += $(CPROF)
+        CXXFLAGS += $(CPROF)
 else
-        CFLAGS += $(COPTIMIZE)
+        CXXFLAGS += $(COPTIMIZE)
 endif
 
 .PHONY: all clean pack bin
@@ -36,7 +36,7 @@ profile: all
 
 bin:
 	@echo :: Compiling \"$(NAME)\" \($(CPUARCH)\) ...
-	$(CC) $(CFLAGS) $(CSRCS) $(CLIBS) -o $(BIN_DIR)/$(EXEC) 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CSRCS) $(CLIBS) -o $(BIN_DIR)/$(EXEC)
 	chmod 755 $(BIN_DIR)/$(EXEC)
 	@echo :: Done
 
